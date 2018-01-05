@@ -31,7 +31,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f");
+uint256 hashGenesisBlock("3ceb19b37b99966ee59d0770fc70514df158e470c8a6ce7239421ec76f3f91c0");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 32);
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -2724,7 +2724,7 @@ bool LoadBlockIndex()
         pchMessageStart[1] = 0x11;
         pchMessageStart[2] = 0x09;
         pchMessageStart[3] = 0x07;
-        hashGenesisBlock = uint256("0x000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943");
+        hashGenesisBlock = uint256("3ceb19b37b99966ee59d0770fc70514df158e470c8a6ce7239421ec76f3f91c0");
     }
 
     //
@@ -2739,7 +2739,7 @@ bool LoadBlockIndex()
 
 bool InitBlockIndex() {
     // Check whether we're already initialized
-    if (pindexGenesisBlock != NULL)
+    if (pindexGenesisBlock == NULL)
         return true;
 
     // Use the provided setting for -txindex in the new database
@@ -2750,14 +2750,14 @@ bool InitBlockIndex() {
     // Only add the genesis block if not reindexing (in which case we reuse the one already on disk)
     if (!fReindex) {
         // Genesis Block:
-        // CBlock(hash=000000000019d6, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=4a5e1e, nTime=1231006505, nBits=1d00ffff, nNonce=2083236893, vtx=1)
-        //   CTransaction(hash=4a5e1e, ver=1, vin.size=1, vout.size=1, nLockTime=0)
-        //     CTxIn(COutPoint(000000, -1), coinbase 04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73)
-        //     CTxOut(nValue=50.00000000, scriptPubKey=0x5F1DF16B2B704C8A578D0B)
-        //   vMerkleTree: 4a5e1e
+            //CBlock(hash=bb33e07ebb818c33243cd654afb6cbbed0d226af2d15a5e05cd5477688943846, ver=1, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=6b85da65b18602158c8681d9eff938e8f76f94fc2a2c28609b9abcf143f66fe4, nTime=1515101570, nBits=1d00ffff, nNonce=2, vtx=1)
+           // 2018-01-05 03:10:59   CTransaction(hash=6b85da65b18602158c8681d9eff938e8f76f94fc2a2c28609b9abcf143f66fe4, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+            //CTxIn(COutPoint(0000000000000000000000000000000000000000000000000000000000000000, 4294967295), coinbase 04ffff001d01044c655468652054696d65732030342f4a616e2f32303138204f62737472756374696f6e20496e71756972792053686f7773205472756d702773205374727567676c6520746f204b6565702047726970206f6e2052757373696120496e7665737469676174696f6e)
+            //CTxOut(nValue=50.00000000, scriptPubKey=04678afdb0fe5548271967f1a67130)
+            //vMerkleTree: 6b85da65b18602158c8681d9eff938e8f76f94fc2a2c28609b9abcf143f66fe4 
 
         // Genesis block
-        const char* pszTimestamp = "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks";
+        const char* pszTimestamp = "The Times 04/Jan/2018 Obstruction Inquiry Shows Trump's Struggle to Keep Grip on Russia Investigation";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -2769,14 +2769,14 @@ bool InitBlockIndex() {
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1231006505;
+        block.nTime    = 1515101570;
         block.nBits    = 0x1d00ffff;
-        block.nNonce   = 2083236893;
+        block.nNonce   = 2;
 
         if (fTestNet)
         {
-            block.nTime    = 1296688602;
-            block.nNonce   = 414098458;
+            block.nTime    = 1515101570;
+            block.nNonce   = 2;
         }
 
         //// debug print
@@ -2784,7 +2784,7 @@ bool InitBlockIndex() {
         printf("%s\n", hash.ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
+        assert(block.hashMerkleRoot == uint256("6b85da65b18602158c8681d9eff938e8f76f94fc2a2c28609b9abcf143f66fe4"));
         block.print();
         assert(hash == hashGenesisBlock);
 

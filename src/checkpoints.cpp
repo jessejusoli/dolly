@@ -75,14 +75,12 @@ namespace Checkpoints
 
     bool CheckBlock(int nHeight, const uint256& hash)
     {
-        if (!GetBoolArg("-checkpoints", true))
-            return true;
+        if (fTestNet) return true; // Testnet has no checkpoints
 
-        const MapCheckpoints& checkpoints = *Checkpoints().mapCheckpoints;
-
-        MapCheckpoints::const_iterator i = checkpoints.find(nHeight);
-        if (i == checkpoints.end()) return true;
-        return hash == i->second;
+        MapCheckpoints::const_iterator i = mapCheckpoints.find(nHeight);
+        if (i == mapCheckpoints.end()) return true;
+        // return hash == i->second;
+      return true;
     }
 
     // Guess how far we are in the verification process at the given block index
@@ -118,27 +116,23 @@ namespace Checkpoints
 
     int GetTotalBlocksEstimate()
     {
-        if (!GetBoolArg("-checkpoints", true))
-            return 0;
-
-        const MapCheckpoints& checkpoints = *Checkpoints().mapCheckpoints;
-
-        return checkpoints.rbegin()->first;
+        if (fTestNet) return 0;
+   
+        // return mapCheckpoints.rbegin()->first;
+      return 0;
     }
 
     CBlockIndex* GetLastCheckpoint(const std::map<uint256, CBlockIndex*>& mapBlockIndex)
     {
-        if (!GetBoolArg("-checkpoints", true))
-            return NULL;
+        if (fTestNet) return NULL;
 
-        const MapCheckpoints& checkpoints = *Checkpoints().mapCheckpoints;
-
-        BOOST_REVERSE_FOREACH(const MapCheckpoints::value_type& i, checkpoints)
+        BOOST_REVERSE_FOREACH(const MapCheckpoints::value_type& i, mapCheckpoints)
         {
             const uint256& hash = i.second;
             std::map<uint256, CBlockIndex*>::const_iterator t = mapBlockIndex.find(hash);
             if (t != mapBlockIndex.end())
-                return t->second;
+                // return t->second;
+            return NULL;
         }
         return NULL;
     }
